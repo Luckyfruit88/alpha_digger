@@ -1,0 +1,63 @@
+brain:
+  base_url: "https://api.worldquantbrain.com"
+  # Browser to load cookies from: chrome, chromium, brave, edge, firefox, safari.
+  # Safari support depends on local browser-cookie3 permissions.
+  browser: null
+  cookie_domain: ".worldquantbrain.com"
+  request_timeout_seconds: 30
+  user_agent: "Mozilla/5.0"
+  # Optional: use a local cookie string file instead of browser-cookie3.
+  # Keep this file private; it is gitignored by default.
+  cookie_file: "secrets/worldquant.cookie"
+
+simulation_defaults:
+  type: "REGULAR"
+  instrument_type: "EQUITY"
+  region: "USA"
+  universe: "TOP3000"
+  delay: 1
+  decay: 4
+  neutralization: "INDUSTRY"
+  truncation: 0.05
+  pasteurization: "ON"
+  unit_handling: "VERIFY"
+  nan_handling: "OFF"
+  language: "FASTEXPR"
+  visualization: false
+
+selection:
+  min_sharpe: 1.6
+  min_fitness: 1.2
+  max_turnover: 0.45
+  require_checks_passed: true
+
+generator:
+  enabled: false
+  per_cycle: 3
+  seed: null
+  fields:
+    - open
+    - high
+    - low
+    - close
+    - volume
+    - vwap
+    - returns
+    - adv20
+    - cap
+    - sharesout
+
+worker:
+  max_concurrent: 1
+  poll_interval_seconds: 10
+  min_submit_interval_seconds: 6
+  max_retries: 3
+  max_poll_seconds: 600
+  stop_on_auth_error: true
+  respect_retry_after: true
+
+paths:
+  input_csv: "alphas.csv"
+  sqlite_db: "data/backtests.sqlite3"
+  results_csv: "reports/backtest_results.csv"
+  markdown_report: "reports/backtest_report.md"

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>ai.fruityclaw.wq-autosubmit</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/FruityClaw/.openclaw/workspace/worldquant-alpha-factory/scripts/run_auto_submit.sh</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/FruityClaw/.openclaw/workspace/worldquant-alpha-factory</string>
+  <key>StartInterval</key>
+  <integer>900</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/FruityClaw/.openclaw/workspace/worldquant-alpha-factory/logs/launchd-autosubmit.out</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/FruityClaw/.openclaw/workspace/worldquant-alpha-factory/logs/launchd-autosubmit.err</string>
+</dict>
+</plist>

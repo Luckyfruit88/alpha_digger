@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>ai.fruityclaw.wq-strategy-monitor</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/FruityClaw/.openclaw/workspace/worldquant-alpha-factory/scripts/run_strategy_monitor.sh</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>/Users/FruityClaw/.openclaw/workspace/worldquant-alpha-factory</string>
+  <key>StartInterval</key>
+  <integer>7200</integer>
+  <key>StandardOutPath</key>
+  <string>/Users/FruityClaw/.openclaw/workspace/worldquant-alpha-factory/logs/strategy_monitor.launchd.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/FruityClaw/.openclaw/workspace/worldquant-alpha-factory/logs/strategy_monitor.launchd.err.log</string>
+</dict>
+</plist>

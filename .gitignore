@@ -1,0 +1,29 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets / credentials
+secrets/
+.env
+*.cookie
+*credentials*.json
+
+# Runtime data and generated artifacts
+alphas.csv
+data/
+state/
+reports/
+logs/
+backups/
+*.sqlite3
+*.db
+*.pid
+*.log
+
+# Local OS/editor noise
+.DS_Store
+*.swp
