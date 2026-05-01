@@ -853,6 +853,17 @@ def action_plan(focus: str, auth: dict, metrics: dict[str, dict], blockers: dict
         multi_budget += 1
         d1_budget += 1
 
+    fresh_budget = 8 if ml_d1_ready == 0 else 4
+    if repair_pending >= 20 or submit_gated_value >= 2:
+        fresh_budget = max(fresh_budget, 10)
+    if best_multi_clear > 0 or best_multi_d1 > 0:
+        fresh_budget = max(4, fresh_budget - 2)
+
+    plan.append({"label": "fresh-supply-generate", "cmd": [str(PY), "scripts/fresh_supply_generator.py", "--max-add", str(fresh_budget), "--field-limit", "120"], "timeout": 300})
+    plan.append({"label": "fresh-supply-import", "cmd": [str(PY), "-m", "alpha_factory.cli", "import"], "timeout": 300})
+    if fresh_budget > 0:
+        plan.append({"label": "fresh-supply-run", "cmd": [str(PY), "-m", "alpha_factory.cli", "run", "--limit", "2", "--id-prefix", "fresh_"], "timeout": 1800})
+
     plan.append({"label": "repair-generate", "cmd": [str(PY), "scripts/repair_candidates.py"], "timeout": 300})
     plan.append({"label": "repair-import", "cmd": [str(PY), "-m", "alpha_factory.cli", "import"], "timeout": 300})
     repairsc2_limit = 0
@@ -962,6 +973,7 @@ def main() -> int:
         "param_updates": param_updates,
         "param_notes": param_notes,
         "optimization_actions": optimization_actions,
+        "fresh_supply": load_json(ROOT / "state" / "fresh_supply_state.json"),
         "adaptive_sampler": adaptive_sampler_summary(),
         "multi_dataset": multi_dataset_summary(),
         "multi_d1_panel": multi_d1_panel_summary(),
@@ -1004,8 +1016,8 @@ def main() -> int:
         nonfatal = is_nonfatal_step_failure(step["label"], code)
         payload["actions"].append({"label": step["label"], "returncode": code, "skipped": False, "nonfatal": nonfatal, "tail": out[-1200:]})
         payload["stage"] = f"after_{step['label']}"
-        if step["label"] in {"adaptive-sampler", "adaptive-run"}:
-            payload["adaptive_sampler"] = adaptive_sampler_summary()
+        if step["label"] in {"fresh-supply-generate", "fresh-supply-run"}:
+            payload["fresh_supply"] = load_json(ROOT / "state" / "fresh_supply_state.json")
         if step["label"] in {"multi-generate", "multi-run", "multi-d1-panel"}:
             payload["multi_dataset"] = multi_dataset_summary()
             payload["multi_d1_panel"] = multi_d1_panel_summary()
