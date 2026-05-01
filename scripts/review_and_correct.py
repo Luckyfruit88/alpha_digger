@@ -38,6 +38,7 @@ SELF_CORR_TRUTH_PATH = ROOT / "state" / "self_corr_truth_table.json"
 MULTI_D1_PANEL_PATH = ROOT / "state" / "multi_d1_panel.json"
 D1_GENERATOR_STATE_PATH = ROOT / "state" / "d1_generator_state.json"
 LINEAGE_OCCUPANCY_STATE_PATH = ROOT / "state" / "lineage_occupancy.json"
+REPAIR_CANDIDATES_STATE_PATH = ROOT / "state" / "repair_candidates_state.json"
 
 
 def load_json(path: Path) -> dict:
@@ -381,6 +382,10 @@ def family_pause_summary(
     top_candidates = (ml_summary or {}).get("top_candidates") or []
     repair_event = None
     previous_watchdog = (latest_state or {}).get("family_watchdog") or {}
+    repair_state = load_json(REPAIR_CANDIDATES_STATE_PATH)
+    repair_history = repair_state.get("history") or []
+    if repair_history:
+        repair_event = repair_history[-1]
     actions = (latest_state or {}).get("actions") or []
     for action in actions:
         if action.get("label") == "repair-generate":
@@ -389,7 +394,7 @@ def family_pause_summary(
                 try:
                     repair_event = json.loads(tail)
                 except Exception:
-                    repair_event = None
+                    pass
             break
 
     top_by_family: dict[str, list[dict]] = {}
