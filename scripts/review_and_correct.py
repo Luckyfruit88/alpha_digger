@@ -380,6 +380,7 @@ def family_pause_summary(
     ml_families = (((ml_summary or {}).get("summary") or {}).get("families") or {})
     top_candidates = (ml_summary or {}).get("top_candidates") or []
     repair_event = None
+    previous_watchdog = (latest_state or {}).get("family_watchdog") or {}
     actions = (latest_state or {}).get("actions") or []
     for action in actions:
         if action.get("label") == "repair-generate":
@@ -412,6 +413,13 @@ def family_pause_summary(
         stale_generate = 0
         score = 0.0
         reasons: list[str] = []
+        previous_family_watch = previous_watchdog.get(family) or {}
+        if previous_family_watch.get("paused"):
+            score += max(float(previous_family_watch.get("score", 0.0) or 0.0), FAMILY_PAUSE_SCORE_THRESHOLD)
+            reasons.extend(previous_family_watch.get("reasons") or ["previous watchdog pause still active"])
+        elif float(previous_family_watch.get("score", 0.0) or 0.0) >= 5.0:
+            score += min(float(previous_family_watch.get("score", 0.0) or 0.0), FAMILY_PAUSE_SCORE_THRESHOLD - 0.1)
+            reasons.extend(previous_family_watch.get("reasons") or ["previous watchdog warning still active"])
         if family == "repairsc_" and repair_event:
             submitted_status = repair_event.get("submitted_filter_status") or {}
             if int(repair_event.get("generated", 0) or 0) == 0 and int(submitted_status.get("after", 0) or 0) == 0:
