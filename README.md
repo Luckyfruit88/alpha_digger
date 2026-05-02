@@ -81,6 +81,12 @@ When a family crosses thresholds, it is automatically **downweighted** or **paus
 - High-risk or repeatedly hopeless lineages should be deprioritized quickly
 - Prefer structural novelty over superficial parameter tweaks
 
+## External project strategy
+
+See [`docs/external_project_strategy.md`](docs/external_project_strategy.md) for the roadmap distilled from KunQuant, Alphalens, AlphaForge, WorldQuant Alpha101, worldquant-brain-simulator, and worldquant-miner.
+
+Short version: the current workflow already has high-self-correlation screening, submitted-alpha similarity checks, ML-style risk scoring, and strict autosubmit gates. The next optimization should not loosen those gates. Instead, it should strengthen local pre-screening with AST/canonical expression similarity, Alpha101-style motif labels, optional local simulator proxies, and Alphalens-style diagnostics before spending WorldQuant Brain resources.
+
 ## Maintenance rule
 
 From now on, script changes for this workflow should be mirrored into this repository so GitHub remains the clean external source of truth.
